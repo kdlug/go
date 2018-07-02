@@ -2,6 +2,7 @@ version: "3"
 services:
 
   consul:
+    name:  consul
     image: consul:1.2.0
     ports:
     - "8500:8500"

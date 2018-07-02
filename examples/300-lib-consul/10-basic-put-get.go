@@ -1,4 +1,3 @@
-// go get github.com/hashicorp/consul/api
 // http://techblog.zeomega.com/devops/golang/2015/06/09/consul-kv-api-in-golang.html
 package main
 
