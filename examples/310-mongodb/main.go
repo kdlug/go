@@ -17,6 +17,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 // Connection URI
@@ -58,7 +59,7 @@ func main() {
 	}()
 	// Ensure that your MongoDB server was found and connected to successfully using the Ping method.
 	// Ping the primary
-	if err := client.Ping(ctx, nil); err != nil {
+	if err := client.Ping(ctx, readpref.Primary()); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Successfully connected and pinged.")
@@ -74,9 +75,30 @@ func main() {
 		Completed: false,
 	}
 
+	newTasks := []interface{}{
+		&Task{
+			ID:        primitive.NewObjectID(),
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+			Text:      "Task #10",
+			Completed: false,
+		},
+		&Task{
+			ID:        primitive.NewObjectID(),
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+			Text:      "Task #11",
+			Completed: false,
+		},
+	}
+
 	if err := createTask(task); err != nil {
 		log.Fatal(err)
 	}
+	if err := createTasks(newTasks); err != nil {
+		log.Fatal(err)
+	}
+
 	tasks, _ := getAll()
 	printTasks(tasks)
 }
@@ -90,6 +112,11 @@ func printTasks(tasks []*Task) {
 
 func createTask(task *Task) error {
 	_, err := collection.InsertOne(ctx, task) // returns the ID of the document that was inserted.
+	return err
+}
+
+func createTasks(tasks []interface{}) error {
+	_, err := collection.InsertMany(ctx, tasks) // returns the IDs of the documents that was inserted.
 	return err
 }
 
