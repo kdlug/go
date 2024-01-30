@@ -2,16 +2,17 @@ package book
 
 import (
 	"fiber/database"
+	"net/http"
+
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 type Book struct {
 	gorm.Model
-	Title  string `json:"title"`
-	Author string `json:"author"`
-	Rating int    `json:"rating"`
+	Title  string //`json:"title"`
+	Author string // `json:"author"`
+	Rating int    //`json:"rating"`
 }
 
 func GetBooks(c *fiber.Ctx) error {
@@ -36,8 +37,9 @@ func GetBook(c *fiber.Ctx) error {
 func NewBook(c *fiber.Ctx) error {
 	db := database.DBConn
 
-	book := new(Book)
-	if err := c.BodyParser(book); err != nil {
+	//book := new(Book)
+	var book Book
+	if err := c.BodyParser(&book); err != nil {
 		return c.Status(http.StatusBadRequest).SendString(err.Error())
 	}
 

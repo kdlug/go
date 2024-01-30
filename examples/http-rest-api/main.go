@@ -1,16 +1,17 @@
 package main
 
+//
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"encoding/json"
 )
 
 type Article struct {
-	Title string `json:"title"`
-	Description string `json:"description"`
-	Price float64 `json:"price"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
 }
 
 type Articles []Article
@@ -35,6 +36,9 @@ func handleRequests() {
 	// register function
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/articles", getAllArticles)
+	// Your http.ListenAndServe function passes a nil value for the http.Handler parameter.
+	// This tells the ListenAndServe function that you want to use the default server multiplexer
+	// and not the one you’ve set up.
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 

@@ -43,7 +43,12 @@ func api(c *fiber.Ctx) error {
 }
 
 func main() {
-	app := fiber.New()
+	// config
+	config := fiber.Config{
+		ServerHeader: "My Server",
+	}
+
+	app := fiber.New(config)
 	initDatabase()
 
 	setupRoutes(app)
