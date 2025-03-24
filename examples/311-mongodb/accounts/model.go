@@ -17,5 +17,12 @@ type Account struct {
 	LastUpdated   time.Time          `bson:"last_updated"`
 }
 
+type AccountSummary struct {
+	AccountType string  `bson:"account_type"`
+	AvgBalance  float64 `bson:"balance"`
+}
+
 const AccountTypeChecking = "checking"
 const AccountTypeSavings = "savings"
+
+const AccountStatusActive = "active"
